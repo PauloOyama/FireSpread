@@ -7,11 +7,11 @@ namespace ui;
 class GridInterface
 {
 
-    private static int widthNum = 5;
-    private static int heightNum = 5;
+    private static int widthNum = 9;
+    private static int heightNum = 9;
     private static readonly Color onColor = Raylib.DARKGREEN;
     private static readonly Color offColor = Raylib.BLACK;
-    FireSpreadAutomata fireAutomata = new(widthNum, heightNum);
+    public FireSpreadAutomata fireAutomata = new(widthNum, heightNum);
     private List<LamportInterface> grid = new();
     private readonly List<Color> colors = new()
     {
@@ -26,14 +26,14 @@ class GridInterface
     public void Draw()
     {
         ;
-        int posX = 0;
-        int posY = 0;
+        int posX = 1;
+        int posY = 1;
         for (int i = 0; i < widthNum * heightNum; i++)
         {
             if (i % heightNum == 0)
             {
                 posY++;
-                posX = 0;
+                posX = 1;
 
             }
             // Console.WriteLine(i);
@@ -146,21 +146,26 @@ class LamportInterface
         )
     );
 
-    static void UpdateAndDraw(ref UIState state)
+    static void UpdateAndDraw(ref UIState state, int TPeriod)
     {
         switch (state)
         {
             case UIState.VERIFY:
                 {
                     map.Draw();
+                    map.fireAutomata.UpdateGrid();
                     Raylib.DrawText("Wildfire Simulation", 900, 20, 40, Raylib.BLACK);
                     // messageDrop.CheckForFiles();
                     // pubkeyDrop.CheckForFiles();
-                    Raylib.DrawText("Message:", 1200, 68, 20, Raylib.BLACK);
+                    // Raylib.DrawText("Message:", 1200, 68, 20, Raylib.BLACK);
                     // messageDrop.Draw(20);
-                    Raylib.DrawText("Public Key:", 800, 188, 20, Raylib.BLACK);
+                    Raylib.DrawText("Interation (t): ", 800, 188, 30, Raylib.BLACK);
+                    Raylib.DrawText(TPeriod.ToString(), 1050, 180, 50, Raylib.BLACK);
+                    Raylib.DrawText("Burn Percentage (%): ", 800, 388, 30, Raylib.BLACK);
+                    Console.WriteLine(map.fireAutomata.burnPercentage());
+                    Raylib.DrawText(map.fireAutomata.burnPercentage().ToString(), 1150, 380, 50, Raylib.BLACK);
                     // pubkeyDrop.Draw(20);
-                    Raylib.DrawText("Signature:", 1100, 188, 20, Raylib.BLACK);
+                    // Raylib.DrawText("Signature:", 1100, 188, 20, Raylib.BLACK);
                     // Thread.Sleep(6000);
                     // Console.ReadLine();
 
@@ -232,44 +237,46 @@ class LamportInterface
         }
     }
 
-    // static void Main()
-    // {
-    //     Raylib.InitWindow(1700, 900, "Cellular Automata");
-    //     Raylib.SetTargetFPS(60);
+    static void Main()
+    {
+        int period = 0;
+        Raylib.InitWindow(1700, 900, "Cellular Automata");
+        Raylib.SetTargetFPS(60);
 
-    //     UIState currentState = UIState.VERIFY;
-    //     HashAlgorithm hashFunc = SHA256.Create();
-    //     // signer = new LamportSigner(hashFunc);
-    //     // verifier = new LamportVerifier(hashFunc);
+        UIState currentState = UIState.VERIFY;
+        HashAlgorithm hashFunc = SHA256.Create();
+        // signer = new LamportSigner(hashFunc);
+        // verifier = new LamportVerifier(hashFunc);
 
-    //     Console.WriteLine("\n");
+        Console.WriteLine("\n");
 
-    //     // Verify State fileDroppers
-    //     // FileDrop message = new FileDrop()
+        // Verify State fileDroppers
+        // FileDrop message = new FileDrop()
 
-    //     while (!Raylib.WindowShouldClose())
-    //     {
-    //         // if (Raylib.IsFileDropped())
-    //         // {
-    //         //     var droppedFiles = Raylib.GetDroppedFilesAndClear();
-    //         //     droppedFiles.ToList().ForEach((string s) => {Console.WriteLine($"File dropped: {s}");});
-    //         //     var mousePos = Raylib.GetMousePosition();
-    //         //     Console.WriteLine($"Mouse: ({mousePos.X},{mousePos.Y})");
-    //         // }
+        while (!Raylib.WindowShouldClose())
+        {
+            // if (Raylib.IsFileDropped())
+            // {
+            //     var droppedFiles = Raylib.GetDroppedFilesAndClear();
+            //     droppedFiles.ToList().ForEach((string s) => {Console.WriteLine($"File dropped: {s}");});
+            //     var mousePos = Raylib.GetMousePosition();
+            //     Console.WriteLine($"Mouse: ({mousePos.X},{mousePos.Y})");
+            // }
 
-    //         Raylib.BeginDrawing();
-    //         Raylib.ClearBackground(Raylib.WHITE);
+            Raylib.BeginDrawing();
+            Raylib.ClearBackground(Raylib.WHITE);
 
-    //         UpdateAndDraw(ref currentState);
+            UpdateAndDraw(ref currentState, period);
+            Thread.Sleep(1000);
+            // int fontSize = 20;
+            // Vector2 offset = new Vector2(Raylib.MeasureText("Badabingus.", fontSize) / 2, fontSize/2);
+            // Raylib.DrawText("Badabingus.", 400 - offset.X, 200 - offset.Y, fontSize, Raylib.BLACK);
+            Raylib.EndDrawing();
+            period++;
+        }
 
-    //         // int fontSize = 20;
-    //         // Vector2 offset = new Vector2(Raylib.MeasureText("Badabingus.", fontSize) / 2, fontSize/2);
-    //         // Raylib.DrawText("Badabingus.", 400 - offset.X, 200 - offset.Y, fontSize, Raylib.BLACK);
-    //         Raylib.EndDrawing();
-    //     }
-
-    //     Raylib.CloseWindow();
-    // }
+        Raylib.CloseWindow();
+    }
 
 
 }
