@@ -1,191 +1,187 @@
-using System.Data.Common;
-using System.Dynamic;
+using Raylib_CsLo;
 
-class FireSpreadAutomata
+namespace ui;
+
+class GridInterface
 {
-    private readonly int reticuladoWidth;
-    private readonly int reticuladoHeight;
-    private int burnagePercentage = 1;
-    private int burnageTotal;
 
+    private static int widthNum;
+    private static int heightNum = 9;
+    private static readonly Color onColor = Raylib.DARKGREEN;
+    private static readonly Color offColor = Raylib.BLACK;
+    public FireSpreadAutomata fireAutomata = new(widthNum, heightNum);
+    // private List<LamportInterface> grid = new();
 
-    public List<List<int>> gridFire;
+    public GridInterface(int size) => widthNum = size;
 
-
-    private int burnTotal() => reticuladoWidth * reticuladoHeight;
-    public bool hasToStop() => burnagePercentage == burnageTotal;
-    public float burnPercentage() => ((float)burnagePercentage / (float)burnageTotal) * 100;
-    public FireSpreadAutomata(int width, int height)
+    private readonly List<Color> colors = new()
     {
-        reticuladoHeight = height;
-        reticuladoWidth = width;
-        gridFire = MakeGrid(reticuladoWidth);
-        burnageTotal = burnTotal();
-    }
-
-    public static List<List<int>> MakeGrid(int width)
+        new() {r = 34,g=177,b=76,a=255},
+        new() {r=255,g=242,b=0,a=255},
+        new() {r=209,g=198,b=0,a=255},
+        new() {r=255,g= 127,b=39,a= 255},
+        new() {r=255,g= 85,b=19,a=255},
+        new() {r=237,g= 28,b=36,a=255},
+        new() {r=136,g= 0,b=21,a=255},
+        new() {r=51,g=51,b=51,a=255}};
+    public void Draw()
     {
-        List<List<int>> gridAux = new List<List<int>> {
-            new() {0,0,0,0,0,0,0,0,0},
-            new() {0,0,0,0,0,0,0,0,0},
-            new() {0,0,0,0,0,0,0,0,0},
-            new() {0,0,0,0,0,0,0,0,0},
-            new() {0,0,0,0,1,0,0,0,0},
-            new() {0,0,0,0,0,0,0,0,0},
-            new() {0,0,0,0,0,0,0,0,0},
-            new() {0,0,0,0,0,0,0,0,0},
-            new() {0,0,0,0,0,0,0,0,0},
-        };
 
-
-
-        List<List<int>> padding = new();
-        List<int> aa = new();
-
-        for (int y = 0; y < width + 2; y++) aa.Add(0);
-
-        padding.Add(aa);
-
-        for (int i = 0; i < gridAux.Count; i++)
+        int posX = 1;
+        int posY = 1;
+        for (int i = 0; i < widthNum * heightNum; i++)
         {
-            List<int> paddingLine = new();
-            for (int ii = 0; ii < gridAux[i].Count + 2; ii++)
+            if (i % heightNum == 0)
             {
-                if (ii == 0) paddingLine.Add(gridAux[i][ii]);
-                else if (ii == (gridAux[i].Count + 1)) paddingLine.Add(gridAux[i][ii - 2]);
-                else paddingLine.Add(gridAux[i][ii - 1]);
+                posY++;
+                posX = 1;
 
             }
-            padding.Add(paddingLine);
-        }
-        padding.Add(aa);
+            // Console.WriteLine(i);
+            // Console.WriteLine(posX);
+            // Console.WriteLine(posY);
+            // Console.WriteLine(grid[posX][posY - 1]);
+            // Console.WriteLine(grid[posX][posY]);
 
-        return padding;
+            // Console.WriteLine((posX * 13 + posY * 27) % 4);
+            // Raylib.DrawRectangle(40 + 10 * posX, 130 + 10 * posY, 10, 10, colors[(posX * 13 + posY * 27) % 4]);
+            Raylib.DrawRectangle(40 + 60 * posX, 130 + 60 * posY, 58, 58, colors[fireAutomata.gridFire[posX][posY - 1]]);
+            posX++;
+        }
+        // for (int i = 0; i < widthNum; i++)
+        // {
+        //     for (int ii = 0; ii < heightNum; i++)
+        //     {
+        //         // Raylib.DrawRectangleLinesEx(rect, fontSize / 4, onColor);
+        //     }
+        // }
+
+
+        // var offset = new Vector2(Raylib.MeasureText(currentFileName ?? "EMPTY", fontSize) / 2, fontSize / 2);
+        // Raylib.DrawText(currentFileName ?? "EMPTY", rect.X + rect.width / 2 - offset.X, rect.Y + rect.height / 2 - offset.Y, fontSize, currentFileName == null ? offColor : onColor);
     }
 
-    public void UpdateGrid()
+}
+
+
+class LamportInterface
+{
+    enum UIState
     {
-        List<List<int>> changes = new List<List<int>>();
-        for (int y = 1; y < reticuladoHeight + 1; y++)
+        SIGN,
+        VERIFY
+    };
+
+    static GridInterface map = new(9);
+    // Both States
+    static Rectangle signButtonRec = new Rectangle(
+        1200, 320, 80, 30
+    );
+
+    static Rectangle changeModeRec = new Rectangle(
+        550, 20, 20, 20
+    );
+
+
+    static void UpdateAndDraw(ref UIState state, int TPeriod)
+    {
+        switch (state)
         {
-            for (int x = 1; x < reticuladoWidth + 1; x++)
-            {
-                //It's on fire
-                if (gridFire[x][y] != 0)
+            case UIState.VERIFY:
                 {
-                    if (gridFire[x][y] < 7)
-                        gridFire[x][y]++;
-                }
-                else
-                {
-                    int leftTop = 0;
-                    int leftCenter = 0;
-                    int leftBottom = 0;
-                    int rightCenter = 0;
-                    int rightTop = 0;
-                    int rightBottom = 0;
-                    int centerTop = 0;
-                    int centerBottom = 0;
-                    int sumToBurn = 0;
+                    map.Draw();
+                    map.fireAutomata.UpdateGrid();
+                    Raylib.DrawText("Wildfire Simulation", 900, 20, 40, Raylib.BLACK);
+                    // messageDrop.CheckForFiles();
+                    // pubkeyDrop.CheckForFiles();
+                    // Raylib.DrawText("Message:", 1200, 68, 20, Raylib.BLACK);
+                    // messageDrop.Draw(20);
+                    Raylib.DrawText("Interation (t): ", 800, 188, 30, Raylib.BLACK);
+                    Raylib.DrawText(TPeriod.ToString(), 1050, 180, 50, Raylib.BLACK);
+                    Raylib.DrawText("Burn Percentage (%): ", 800, 388, 30, Raylib.BLACK);
+                    Console.WriteLine(map.fireAutomata.BurnPercentage());
+                    Raylib.DrawText(map.fireAutomata.BurnPercentage().ToString(), 1150, 380, 50, Raylib.BLACK);
+                    // pubkeyDrop.Draw(20);
+                    // Raylib.DrawText("Signature:", 1100, 188, 20, Raylib.BLACK);
+                    // Thread.Sleep(6000);
+                    // Console.ReadLine();
 
-
-                    // if (x == 0)
-                    // {
-                    //     leftTop = gridFire[x - 1][y - 1] != 0 ? 1 : 0;
-                    //     leftCenter = gridFire[x - 1][y] != 0 ? 1 : 0;
-                    //     leftBottom = gridFire[x - 1][y + 1] != 0 ? 1 : 0;
-                    //     centerTop = gridFire[x][y + 1] != 0 ? 1 : 0;
-                    //     centerBottom = gridFire[x][y - 1] != 0 ? 1 : 0;
-                    // }
-
-                    // if (y == 0)
-                    // {
-                    //     leftTop = 0;
-                    //     centerTop = 0;
-                    //     rightTop = 0;
-
-                    // }
-
-                    // if (x == (reticuladoWidth - 1))
-                    // {
-                    //     rightCenter = gridFire[x + 1][y - 1] != 0 ? 1 : 0;
-                    //     rightTop = gridFire[x + 1][y] != 0 ? 1 : 0;
-                    //     rightBottom = gridFire[x + 1][y + 1] != 0 ? 1 : 0;
-                    //     centerTop = gridFire[x][y + 1] != 0 ? 1 : 0;
-                    //     centerBottom = gridFire[x][y - 1] != 0 ? 1 : 0;
-                    // }
-
-                    // if (y == (reticuladoHeight - 1))
-                    // {
-                    //     leftBottom = 0;
-                    //     centerBottom = 0;
-                    //     rightBottom = 0;
-                    // }
-                    if ((x > 0) && (x <= reticuladoWidth) && (y > 0) && (y <= reticuladoWidth))
+                    if (RayGui.GuiButton(signButtonRec, "Verify!"))
                     {
-                        //Checkers
-                        leftTop = gridFire[x - 1][y - 1] != 0 ? 1 : 0;
-                        leftCenter = gridFire[x - 1][y] != 0 ? 1 : 0;
-                        leftBottom = gridFire[x - 1][y + 1] != 0 ? 1 : 0;
-                        centerTop = gridFire[x][y - 1] != 0 ? 1 : 0;
-                        centerBottom = gridFire[x][y + 1] != 0 ? 1 : 0;
-                        rightCenter = gridFire[x + 1][y] != 0 ? 1 : 0;
-                        rightTop = gridFire[x + 1][y - 1] != 0 ? 1 : 0;
-                        rightBottom = gridFire[x + 1][y + 1] != 0 ? 1 : 0;
 
-                        sumToBurn = leftBottom + leftCenter + leftTop + rightBottom + rightCenter + rightTop + centerBottom + centerTop;
+                        Console.WriteLine($"WARN: Missing files!");
 
                     }
 
-
-                    //has Adjacent Burning
-                    if (sumToBurn > 0)
+                    if (RayGui.GuiButton(changeModeRec, "#61#"))
                     {
-                        Random RNG = new();
-                        int probability = RNG.Next(0, 100);
-                        if (probability > 70)
-                            changes.Add(new List<int>() { x, y });
-                        continue;
+                        // messageDrop.Clear();
+                        // pubkeyDrop.Clear();
+                        state = UIState.SIGN;
+                    }
+                }
+                break;
+            default: // SIGN
+                {
+                    Raylib.DrawText("Celullar Automata", 220, 20, 20, Raylib.BLACK);
+
+                    // fileToSign.Draw(20);
+
+                    if (RayGui.GuiButton(signButtonRec, "Start"))
+                    {
+                        state = UIState.VERIFY;
+
+                        Console.WriteLine($"INFO: File signed.");
+
                     }
 
+                    if (RayGui.GuiButton(changeModeRec, "#61#"))
+                    {
 
-
+                        state = UIState.VERIFY;
+                    }
                 }
-            }
-
+                break;
         }
-        changes.ForEach(delegate (List<int> a)
-{
-    burnagePercentage++;
-    gridFire[a[0]][a[1]] = 1;
-});
-
     }
 
-
-    public void PrintGrid()
+    static void Main()
     {
-        for (int y = 1; y < reticuladoHeight; y++)
+        int period = 0;
+        Raylib.InitWindow(1700, 900, "Cellular Automata");
+        Raylib.SetTargetFPS(60);
+
+        UIState currentState = UIState.VERIFY;
+
+        Console.WriteLine("\n");
+
+        // Verify State fileDroppers
+        // FileDrop message = new FileDrop()
+
+        while (!Raylib.WindowShouldClose())
         {
-            for (int x = 1; x < reticuladoWidth; x++)
-            {
-                Console.Write("{0} ", gridFire[x][y]);
-            }
-            Console.WriteLine("");
+            // if (Raylib.IsFileDropped())
+            // {
+            //     var droppedFiles = Raylib.GetDroppedFilesAndClear();
+            //     droppedFiles.ToList().ForEach((string s) => {Console.WriteLine($"File dropped: {s}");});
+            //     var mousePos = Raylib.GetMousePosition();
+            //     Console.WriteLine($"Mouse: ({mousePos.X},{mousePos.Y})");
+            // }
+
+            Raylib.BeginDrawing();
+            Raylib.ClearBackground(Raylib.WHITE);
+
+            UpdateAndDraw(ref currentState, period);
+            Thread.Sleep(1000);
+            // int fontSize = 20;
+            // Vector2 offset = new Vector2(Raylib.MeasureText("Badabingus.", fontSize) / 2, fontSize/2);
+            // Raylib.DrawText("Badabingus.", 400 - offset.X, 200 - offset.Y, fontSize, Raylib.BLACK);
+            Raylib.EndDrawing();
+            period++;
         }
+
+        Raylib.CloseWindow();
     }
 
 
-
-    // static void Main()
-    // {
-    //     FireSpreadAutomata grid = new(6, 6);
-
-    //     grid.PrintGrid();
-    //     grid.UpdateGrid();
-    //     grid.PrintGrid();
-
-
-
-    // }
 }
