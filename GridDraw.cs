@@ -5,7 +5,7 @@ namespace ui;
 class GridInterface
 {
 
-    private static int widthNum;
+    private static int widthNum = 9;
     private static int heightNum = 9;
     private static readonly Color onColor = Raylib.DARKGREEN;
     private static readonly Color offColor = Raylib.BLACK;
@@ -37,15 +37,10 @@ class GridInterface
                 posX = 1;
 
             }
-            // Console.WriteLine(i);
-            // Console.WriteLine(posX);
-            // Console.WriteLine(posY);
-            // Console.WriteLine(grid[posX][posY - 1]);
-            // Console.WriteLine(grid[posX][posY]);
 
             // Console.WriteLine((posX * 13 + posY * 27) % 4);
             // Raylib.DrawRectangle(40 + 10 * posX, 130 + 10 * posY, 10, 10, colors[(posX * 13 + posY * 27) % 4]);
-            Raylib.DrawRectangle(40 + 60 * posX, 130 + 60 * posY, 58, 58, colors[fireAutomata.gridFire[posX][posY - 1]]);
+            Raylib.DrawRectangle(40 + 60 * posX, 130 + 60 * posY, 58, 58, fireAutomata.gridFire[posX][posY - 1].GetColor());
             posX++;
         }
         // for (int i = 0; i < widthNum; i++)

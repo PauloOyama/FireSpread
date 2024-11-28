@@ -7,7 +7,7 @@ class FireSpreadAutomata
     private int burnageTotal;
 
 
-    public List<List<int>> gridFire;
+    public List<List<Vegetation>> gridFire;
 
 
     private int BurnTotal() => reticuladoWidth * reticuladoHeight;
@@ -21,32 +21,32 @@ class FireSpreadAutomata
         burnageTotal = BurnTotal();
     }
 
-    public static List<List<int>> MakeGrid(int width)
+    public static List<List<Vegetation>> MakeGrid(int width)
     {
-        List<List<int>> gridAux = new List<List<int>> {
-            new() {0,0,0,0,0,0,0,0,0},
-            new() {0,0,0,0,0,0,0,0,0},
-            new() {0,0,0,0,0,0,0,0,0},
-            new() {0,0,0,0,0,0,0,0,0},
-            new() {0,0,0,0,1,0,0,0,0},
-            new() {0,0,0,0,0,0,0,0,0},
-            new() {0,0,0,0,0,0,0,0,0},
-            new() {0,0,0,0,0,0,0,0,0},
-            new() {0,0,0,0,0,0,0,0,0},
+        List<List<Vegetation>> gridAux = new List<List<Vegetation>> {
+            new() {new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T")},
+            new() {new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T")},
+            new() {new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T")},
+            new() {new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T")},
+            new() {new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T")},
+            new() {new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T")},
+            new() {new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T")},
+            new() {new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T")},
+            new() {new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T")},
         };
 
+        gridAux[4][4].SetFire();
 
+        List<List<Vegetation>> padding = new();
+        List<Vegetation> aa = new();
 
-        List<List<int>> padding = new();
-        List<int> aa = new();
-
-        for (int y = 0; y < width + 2; y++) aa.Add(0);
+        for (int y = 0; y < width + 2; y++) aa.Add(new Vegetation(""));
 
         padding.Add(aa);
 
         for (int i = 0; i < gridAux.Count; i++)
         {
-            List<int> paddingLine = new();
+            List<Vegetation> paddingLine = new();
             for (int ii = 0; ii < gridAux[i].Count + 2; ii++)
             {
                 if (ii == 0) paddingLine.Add(gridAux[i][ii]);
@@ -69,10 +69,9 @@ class FireSpreadAutomata
             for (int x = 1; x < reticuladoWidth + 1; x++)
             {
                 //It's on fire
-                if (gridFire[x][y] != 0)
+                if (gridFire[x][y].IsBurning())
                 {
-                    if (gridFire[x][y] < 7)
-                        gridFire[x][y]++;
+                    gridFire[x][y].UpdateBurn();
                 }
                 else
                 {
@@ -122,14 +121,14 @@ class FireSpreadAutomata
                     if ((x > 0) && (x <= reticuladoWidth) && (y > 0) && (y <= reticuladoWidth))
                     {
                         //Checkers
-                        leftTop = gridFire[x - 1][y - 1] != 0 ? 1 : 0;
-                        leftCenter = gridFire[x - 1][y] != 0 ? 1 : 0;
-                        leftBottom = gridFire[x - 1][y + 1] != 0 ? 1 : 0;
-                        centerTop = gridFire[x][y - 1] != 0 ? 1 : 0;
-                        centerBottom = gridFire[x][y + 1] != 0 ? 1 : 0;
-                        rightCenter = gridFire[x + 1][y] != 0 ? 1 : 0;
-                        rightTop = gridFire[x + 1][y - 1] != 0 ? 1 : 0;
-                        rightBottom = gridFire[x + 1][y + 1] != 0 ? 1 : 0;
+                        leftTop = gridFire[x - 1][y - 1].IsBurning() ? 1 : 0;
+                        leftCenter = gridFire[x - 1][y].IsBurning() ? 1 : 0;
+                        leftBottom = gridFire[x - 1][y + 1].IsBurning() ? 1 : 0;
+                        centerTop = gridFire[x][y - 1].IsBurning() ? 1 : 0;
+                        centerBottom = gridFire[x][y + 1].IsBurning() ? 1 : 0;
+                        rightCenter = gridFire[x + 1][y].IsBurning() ? 1 : 0;
+                        rightTop = gridFire[x + 1][y - 1].IsBurning() ? 1 : 0;
+                        rightBottom = gridFire[x + 1][y + 1].IsBurning() ? 1 : 0;
 
                         sumToBurn = leftBottom + leftCenter + leftTop + rightBottom + rightCenter + rightTop + centerBottom + centerTop;
 
@@ -141,7 +140,7 @@ class FireSpreadAutomata
                     {
                         Random RNG = new();
                         int probability = RNG.Next(0, 100);
-                        if (probability > 70)
+                        if (probability <= gridFire[x][y].GetProbabilityToBurn())
                             changes.Add(new List<int>() { x, y });
                         continue;
                     }
@@ -155,7 +154,7 @@ class FireSpreadAutomata
         changes.ForEach(delegate (List<int> a)
 {
     burnagePercentage++;
-    gridFire[a[0]][a[1]] = 1;
+    gridFire[a[0]][a[1]].SetFire();
 });
 
     }
