@@ -9,7 +9,7 @@ class FireSpreadAutomata
 
     public List<List<Vegetation>> gridFire;
 
-
+    VegetationMap vegetationMap = new();
     private int BurnTotal() => reticuladoWidth * reticuladoHeight;
     public bool HasToStop() => burnagePercentage == burnageTotal;
     public float BurnPercentage() => ((float)burnagePercentage / (float)burnageTotal) * 100;
@@ -17,48 +17,8 @@ class FireSpreadAutomata
     {
         reticuladoHeight = height;
         reticuladoWidth = width;
-        gridFire = MakeGrid(reticuladoWidth);
+        gridFire = vegetationMap.MakeGrid();
         burnageTotal = BurnTotal();
-    }
-
-    public static List<List<Vegetation>> MakeGrid(int width)
-    {
-        List<List<Vegetation>> gridAux = new List<List<Vegetation>> {
-            new() {new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T")},
-            new() {new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T")},
-            new() {new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T")},
-            new() {new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T")},
-            new() {new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T")},
-            new() {new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T")},
-            new() {new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T")},
-            new() {new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T")},
-            new() {new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T"),new Vegetation("T")},
-        };
-
-        gridAux[4][4].SetFire();
-
-        List<List<Vegetation>> padding = new();
-        List<Vegetation> aa = new();
-
-        for (int y = 0; y < width + 2; y++) aa.Add(new Vegetation(""));
-
-        padding.Add(aa);
-
-        for (int i = 0; i < gridAux.Count; i++)
-        {
-            List<Vegetation> paddingLine = new();
-            for (int ii = 0; ii < gridAux[i].Count + 2; ii++)
-            {
-                if (ii == 0) paddingLine.Add(gridAux[i][ii]);
-                else if (ii == (gridAux[i].Count + 1)) paddingLine.Add(gridAux[i][ii - 2]);
-                else paddingLine.Add(gridAux[i][ii - 1]);
-
-            }
-            padding.Add(paddingLine);
-        }
-        padding.Add(aa);
-
-        return padding;
     }
 
     public void UpdateGrid()
