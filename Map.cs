@@ -4,33 +4,46 @@ class VegetationMap
     private List<List<Vegetation>> vegetationMap = new();
 
     public VegetationMap()
+    //improve to read json
     {
 
-        // vegetationMapList = new List<List<string>>
-        // {
-        //     new () { "E", "E", "E", "S", "S", "S", "T", "T", "T", "RU", "RU", "RU", "RI", "RI", "RI", "E", "E", "E", "S", "S" },
-        //     new () { "S", "S", "S", "S", "S", "S", "T", "T", "T", "RU", "RU", "RU", "RI", "RI", "RI", "E", "E", "E", "S", "S" },
-        //     new() { "S", "S", "S", "S", "S", "S", "T", "T", "T", "RU", "RU", "RU", "RI", "RI", "RI", "E", "E", "E", "S", "S" },
-        //     new() { "S", "S", "S", "T", "T", "T", "RU", "RU", "RU", "RI", "RI", "RI", "E", "E", "E", "S", "S", "S", "T", "T" },
-        //     new() { "T", "T", "T", "T", "T", "T", "RU", "RU", "RU", "RI", "RI", "RI", "E", "E", "E", "S", "S", "S", "T", "T" },
-        //     new() { "T", "T", "T", "T", "T", "T", "RU", "RU", "RU", "RI", "RI", "RI", "E", "E", "E", "S", "S", "S", "T", "T" },
-        //     new() { "T", "T", "T", "RU", "RU", "RU", "RI", "RI", "RI", "E", "E", "E", "S", "S", "S", "T", "T", "T", "RU", "RU" },
-        //     new() { "RU", "RU", "RU", "RU", "RU", "RU", "RI", "RI", "RI", "E", "E", "E", "S", "S", "S", "T", "T", "T", "RU", "RU" },
-        //     new() { "RU", "RU", "RU", "RU", "RU", "RU", "RI", "RI", "RI", "E", "E", "E", "S", "S", "S", "T", "T", "T", "RU", "RU" },
-        //     new() { "RU", "RU", "RU", "RI", "RI", "RI", "E", "E", "E", "S", "S", "S", "T", "T", "T", "RU", "RU", "RU", "RI", "RI" }
-        // };
         vegetationMapList = new List<List<string>>
         {
-            new() { "E", "E", "E", "S", "S", "S", "T", "T", "T" },
-            new() { "S", "S", "S", "T", "T", "T", "RU", "RU", "RU" },
-            new() { "RI", "RI", "RI", "E", "E", "E", "S", "S", "S" },
-            new() { "T", "T", "T", "RU", "RU", "RU", "RI", "RI", "RI" },
-            new() { "E", "E", "E", "S", "S", "S", "T", "T", "T" },
-            new() { "RU", "RU", "RU", "RI", "RI", "RI", "E", "E", "E" },
-            new() { "S", "S", "S", "T", "T", "T", "RU", "RU", "RU" },
-            new() { "RI", "RI", "RI", "E", "E", "E", "S", "S", "S" },
-            new() { "T", "T", "T", "RU", "RU", "RU", "RI", "RI", "RI" }
+            new () { "E", "E", "E", "S", "S", "S", "T", "T", "T", "RU", "RU", "RU", "RI", "RI", "RI", "E", "E", "E", "S", "S" },
+            new () { "S", "S", "S", "S", "S", "S", "T", "T", "T", "RU", "RU", "RU", "RI", "RI", "RI", "E", "E", "E", "S", "S" },
+            new() { "S", "S", "S", "S", "S", "S", "T", "T", "T", "RU", "RU", "RU", "RI", "RI", "RI", "E", "E", "E", "S", "S" },
+            new() { "S", "S", "S", "T", "T", "T", "RU", "RU", "RU", "RI", "RI", "RI", "E", "E", "E", "S", "S", "S", "T", "T" },
+            new() { "T", "T", "T", "T", "T", "T", "RU", "RU", "RU", "RI", "RI", "RI", "E", "E", "E", "S", "S", "S", "T", "T" },
+            new() { "T", "T", "T", "T", "T", "T", "RU", "RU", "RU", "RI", "RI", "RI", "E", "E", "E", "S", "S", "S", "T", "T" },
+            new() { "T", "T", "T", "RU", "RU", "RU", "RI", "RI", "RI", "E", "E", "E", "S", "S", "S", "T", "T", "T", "RU", "RU" },
+            new() { "RU", "RU", "RU", "RU", "RU", "RU", "RI", "RI", "RI", "E", "E", "E", "S", "S", "S", "T", "T", "T", "RU", "RU" },
+            new() { "RU", "RU", "RU", "RU", "RU", "RU", "RI", "RI", "RI", "E", "E", "E", "S", "S", "S", "T", "T", "T", "RU", "RU" },
+            new() { "RU", "RU", "RU", "RI", "RI", "RI", "E", "E", "E", "S", "S", "S", "T", "T", "T", "RU", "RU", "RU", "RI", "RI" }
         };
+        // vegetationMapList = new List<List<string>>
+        // {
+        //     new() { "E", "E", "E", "S", "S", "S", "T", "T", "T" },
+        //     new() { "S", "S", "S", "T", "T", "T", "RU", "RU", "RU" },
+        //     new() { "RI", "RI", "RI", "E", "E", "E", "S", "S", "S" },
+        //     new() { "T", "T", "T", "RU", "RU", "RU", "RI", "RI", "RI" },
+        //     new() { "E", "E", "E", "S", "S", "S", "T", "T", "T" },
+        //     new() { "RU", "RU", "RU", "RI", "RI", "RI", "E", "E", "E" },
+        //     new() { "S", "S", "S", "T", "T", "T", "RU", "RU", "RU" },
+        //     new() { "RI", "RI", "RI", "E", "E", "E", "S", "S", "S" },
+        //     new() { "T", "T", "T", "RU", "RU", "RU", "RI", "RI", "RI" }
+        // };
+        // vegetationMapList = new List<List<string>>
+        // {
+        //     new() { "E", "E", "E","E", "E", "E","E", "E", "E" },
+        //     new() { "E", "E", "E","E", "E", "E","E", "E", "E" },
+        //     new() { "E", "E", "E","E", "E", "E","E", "E", "E" },
+        //     new() { "E", "E", "E","E", "E", "E","E", "E", "E" },
+        //     new() { "E", "E", "E","E", "E", "E","E", "E", "E" },
+        //     new() { "E", "E", "E","E", "E", "E","E", "E", "E" },
+        //     new() { "E", "E", "E","E", "E", "E","E", "E", "E" },
+        //     new() { "E", "E", "E","E", "E", "E","E", "E", "E" },
+        //     new() { "E", "E", "E","E", "E", "E","E", "E", "E" },
+        // };
         GetMap();
     }
 

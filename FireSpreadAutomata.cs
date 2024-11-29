@@ -28,74 +28,98 @@ class FireSpreadAutomata
         {
             for (int x = 1; x < reticuladoWidth + 1; x++)
             {
+                //Grid hardcoded 
+                int leftTop = 0;
+                int leftCenter = 0;
+                int leftBottom = 0;
+                int rightCenter = 0;
+                int rightTop = 0;
+                int rightBottom = 0;
+                int centerTop = 0;
+                int centerBottom = 0;
+                int sumToBurn = 0;
+
+
                 //It's on fire
+                // if (gridFire[x][y].IsBurning())
+                // {
+                //     gridFire[x][y].UpdateBurn();
+                // }
+                // else
+                // {
+                if ((x > 0) && (x <= reticuladoWidth) && (y > 0) && (y <= reticuladoWidth))
+                {
+                    //Checkers
+                    leftTop = gridFire[x - 1][y - 1].IsBurning() ? 1 : 0;
+                    leftCenter = gridFire[x - 1][y].IsBurning() ? 1 : 0;
+                    leftBottom = gridFire[x - 1][y + 1].IsBurning() ? 1 : 0;
+                    centerTop = gridFire[x][y - 1].IsBurning() ? 1 : 0;
+                    centerBottom = gridFire[x][y + 1].IsBurning() ? 1 : 0;
+                    rightCenter = gridFire[x + 1][y].IsBurning() ? 1 : 0;
+                    rightTop = gridFire[x + 1][y - 1].IsBurning() ? 1 : 0;
+                    rightBottom = gridFire[x + 1][y + 1].IsBurning() ? 1 : 0;
+
+                    sumToBurn = leftBottom + leftCenter + leftTop + rightBottom + rightCenter + rightTop + centerBottom + centerTop;
+
+                }
+
+
+                //Vegetation on Fire
                 if (gridFire[x][y].IsBurning())
                 {
                     gridFire[x][y].UpdateBurn();
+                    Random RNG = new();
+                    if (sumToBurn > 0)
+                    {
+
+                    }
+                    //Just the current sell is Burning
+                    else
+                    {
+                        //leftTop
+                        int probability = RNG.Next(0, 100);
+                        if (probability <= gridFire[x - 1][y - 1].GetProbabilityToBurn())
+                            changes.Add(new List<int>() { x - 1, y - 1 });
+
+                        //leftCenter
+                        probability = RNG.Next(0, 100);
+                        if (probability <= gridFire[x - 1][y].GetProbabilityToBurn())
+                            changes.Add(new List<int>() { x - 1, y });
+
+                        //leftBottom
+                        probability = RNG.Next(0, 100);
+                        if (probability <= gridFire[x - 1][y + 1].GetProbabilityToBurn())
+                            changes.Add(new List<int>() { x - 1, y + 1 });
+
+                        //centerTop
+                        probability = RNG.Next(0, 100);
+                        if (probability <= gridFire[x][y - 1].GetProbabilityToBurn())
+                            changes.Add(new List<int>() { x, y - 1 });
+
+                        //centerBottom
+                        probability = RNG.Next(0, 100);
+                        if (probability <= gridFire[x][y + 1].GetProbabilityToBurn())
+                            changes.Add(new List<int>() { x, y + 1 });
+
+                        //rightCenter
+                        probability = RNG.Next(0, 100);
+                        if (probability <= gridFire[x + 1][y].GetProbabilityToBurn())
+                            changes.Add(new List<int>() { x + 1, y });
+
+                        //rightTop
+                        probability = RNG.Next(0, 100);
+                        if (probability <= gridFire[x + 1][y - 1].GetProbabilityToBurn())
+                            changes.Add(new List<int>() { x + 1, y - 1 });
+
+                        //rightBottom
+                        probability = RNG.Next(0, 100);
+                        if (probability <= gridFire[x + 1][y + 1].GetProbabilityToBurn())
+                            changes.Add(new List<int>() { x + 1, y + 1 });
+                        continue;
+                    }
                 }
                 else
                 {
-                    int leftTop = 0;
-                    int leftCenter = 0;
-                    int leftBottom = 0;
-                    int rightCenter = 0;
-                    int rightTop = 0;
-                    int rightBottom = 0;
-                    int centerTop = 0;
-                    int centerBottom = 0;
-                    int sumToBurn = 0;
-
-
-                    // if (x == 0)
-                    // {
-                    //     leftTop = gridFire[x - 1][y - 1] != 0 ? 1 : 0;
-                    //     leftCenter = gridFire[x - 1][y] != 0 ? 1 : 0;
-                    //     leftBottom = gridFire[x - 1][y + 1] != 0 ? 1 : 0;
-                    //     centerTop = gridFire[x][y + 1] != 0 ? 1 : 0;
-                    //     centerBottom = gridFire[x][y - 1] != 0 ? 1 : 0;
-                    // }
-
-                    // if (y == 0)
-                    // {
-                    //     leftTop = 0;
-                    //     centerTop = 0;
-                    //     rightTop = 0;
-
-                    // }
-
-                    // if (x == (reticuladoWidth - 1))
-                    // {
-                    //     rightCenter = gridFire[x + 1][y - 1] != 0 ? 1 : 0;
-                    //     rightTop = gridFire[x + 1][y] != 0 ? 1 : 0;
-                    //     rightBottom = gridFire[x + 1][y + 1] != 0 ? 1 : 0;
-                    //     centerTop = gridFire[x][y + 1] != 0 ? 1 : 0;
-                    //     centerBottom = gridFire[x][y - 1] != 0 ? 1 : 0;
-                    // }
-
-                    // if (y == (reticuladoHeight - 1))
-                    // {
-                    //     leftBottom = 0;
-                    //     centerBottom = 0;
-                    //     rightBottom = 0;
-                    // }
-                    if ((x > 0) && (x <= reticuladoWidth) && (y > 0) && (y <= reticuladoWidth))
-                    {
-                        //Checkers
-                        leftTop = gridFire[x - 1][y - 1].IsBurning() ? 1 : 0;
-                        leftCenter = gridFire[x - 1][y].IsBurning() ? 1 : 0;
-                        leftBottom = gridFire[x - 1][y + 1].IsBurning() ? 1 : 0;
-                        centerTop = gridFire[x][y - 1].IsBurning() ? 1 : 0;
-                        centerBottom = gridFire[x][y + 1].IsBurning() ? 1 : 0;
-                        rightCenter = gridFire[x + 1][y].IsBurning() ? 1 : 0;
-                        rightTop = gridFire[x + 1][y - 1].IsBurning() ? 1 : 0;
-                        rightBottom = gridFire[x + 1][y + 1].IsBurning() ? 1 : 0;
-
-                        sumToBurn = leftBottom + leftCenter + leftTop + rightBottom + rightCenter + rightTop + centerBottom + centerTop;
-
-                    }
-
-
-                    //has Adjacent Burning
                     if (sumToBurn > 0)
                     {
                         Random RNG = new();
@@ -104,18 +128,23 @@ class FireSpreadAutomata
                             changes.Add(new List<int>() { x, y });
                         continue;
                     }
-
-
-
                 }
+
+
+
+
             }
 
         }
         changes.ForEach(delegate (List<int> a)
-{
-    burnagePercentage++;
-    gridFire[a[0]][a[1]].SetFire();
-});
+        {
+            if (!gridFire[a[0]][a[1]].IsBurning())
+            {
+                burnagePercentage++;
+                gridFire[a[0]][a[1]].SetFire();
+
+            }
+        });
 
     }
 

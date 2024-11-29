@@ -126,7 +126,8 @@ class LamportInterface
             Raylib.ClearBackground(Raylib.WHITE);
 
             UpdateAndDraw(ref currentState, period);
-            Thread.Sleep(1000);
+            //Speed to burn
+            // Thread.Sleep(1000);
             Raylib.EndDrawing();
             period++;
         }

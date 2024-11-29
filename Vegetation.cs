@@ -86,4 +86,6 @@ class Vegetation
             burningStage++;
 
     }
+    //property is dead -> would cause less computation
+
 }
