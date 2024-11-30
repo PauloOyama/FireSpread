@@ -1,3 +1,5 @@
+using System.Text.Json;
+
 class VegetationMap
 {
     private readonly List<List<string>> vegetationMapList;
@@ -6,20 +8,22 @@ class VegetationMap
     public VegetationMap()
     //improve to read json
     {
-
-        vegetationMapList = new List<List<string>>
-        {
-            new () { "E", "E", "E", "S", "S", "S", "T", "T", "T", "RU", "RU", "RU", "RI", "RI", "RI", "E", "E", "E", "S", "S" },
-            new () { "S", "S", "S", "S", "S", "S", "T", "T", "T", "RU", "RU", "RU", "RI", "RI", "RI", "E", "E", "E", "S", "S" },
-            new() { "S", "S", "S", "S", "S", "S", "T", "T", "T", "RU", "RU", "RU", "RI", "RI", "RI", "E", "E", "E", "S", "S" },
-            new() { "S", "S", "S", "T", "T", "T", "RU", "RU", "RU", "RI", "RI", "RI", "E", "E", "E", "S", "S", "S", "T", "T" },
-            new() { "T", "T", "T", "T", "T", "T", "RU", "RU", "RU", "RI", "RI", "RI", "E", "E", "E", "S", "S", "S", "T", "T" },
-            new() { "T", "T", "T", "T", "T", "T", "RU", "RU", "RU", "RI", "RI", "RI", "E", "E", "E", "S", "S", "S", "T", "T" },
-            new() { "T", "T", "T", "RU", "RU", "RU", "RI", "RI", "RI", "E", "E", "E", "S", "S", "S", "T", "T", "T", "RU", "RU" },
-            new() { "RU", "RU", "RU", "RU", "RU", "RU", "RI", "RI", "RI", "E", "E", "E", "S", "S", "S", "T", "T", "T", "RU", "RU" },
-            new() { "RU", "RU", "RU", "RU", "RU", "RU", "RI", "RI", "RI", "E", "E", "E", "S", "S", "S", "T", "T", "T", "RU", "RU" },
-            new() { "RU", "RU", "RU", "RI", "RI", "RI", "E", "E", "E", "S", "S", "S", "T", "T", "T", "RU", "RU", "RU", "RI", "RI" }
-        };
+        string fileName = "./map.json";
+        string jsonString = File.ReadAllText(fileName);
+        vegetationMapList = JsonSerializer.Deserialize<List<List<string>>>(jsonString)!;
+        // var vegetationMapList = new List<List<string>>
+        // {
+        //     new () { "E", "E", "E", "S", "S", "S", "T", "T", "T", "RU", "RU", "RU", "RI", "RI", "RI", "E", "E", "E", "S", "S" },
+        //     new () { "S", "S", "S", "S", "S", "S", "T", "T", "T", "RU", "RU", "RU", "RI", "RI", "RI", "E", "E", "E", "S", "S" },
+        //     new() { "S", "S", "S", "S", "S", "S", "T", "T", "T", "RU", "RU", "RU", "RI", "RI", "RI", "E", "E", "E", "S", "S" },
+        //     new() { "S", "S", "S", "T", "T", "T", "RU", "RU", "RU", "RI", "RI", "RI", "E", "E", "E", "S", "S", "S", "T", "T" },
+        //     new() { "T", "T", "T", "T", "T", "T", "RU", "RU", "RU", "RI", "RI", "RI", "E", "E", "E", "S", "S", "S", "T", "T" },
+        //     new() { "T", "T", "T", "T", "T", "T", "RU", "RU", "RU", "RI", "RI", "RI", "E", "E", "E", "S", "S", "S", "T", "T" },
+        //     new() { "T", "T", "T", "RU", "RU", "RU", "RI", "RI", "RI", "E", "E", "E", "S", "S", "S", "T", "T", "T", "RU", "RU" },
+        //     new() { "RU", "RU", "RU", "RU", "RU", "RU", "RI", "RI", "RI", "E", "E", "E", "S", "S", "S", "T", "T", "T", "RU", "RU" },
+        //     new() { "RU", "RU", "RU", "RU", "RU", "RU", "RI", "RI", "RI", "E", "E", "E", "S", "S", "S", "T", "T", "T", "RU", "RU" },
+        //     new() { "RU", "RU", "RU", "RI", "RI", "RI", "E", "E", "E", "S", "S", "S", "T", "T", "T", "RU", "RU", "RU", "RI", "RI" }
+        // };
         // vegetationMapList = new List<List<string>>
         // {
         //     new() { "E", "E", "E", "S", "S", "S", "T", "T", "T" },
@@ -66,7 +70,7 @@ class VegetationMap
     {
 
 
-        vegetationMap[4][4].SetFire();
+        vegetationMap[49][49].SetFire();
 
         List<List<Vegetation>> padding = new();
         List<Vegetation> aa = new();

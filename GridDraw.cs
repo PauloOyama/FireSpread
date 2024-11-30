@@ -5,8 +5,8 @@ namespace ui;
 class GridInterface
 {
 
-    private static int widthNum = 9;
-    private static int heightNum = 9;
+    private static int widthNum = 100;
+    private static int heightNum = 100;
     private static readonly Color onColor = Raylib.DARKGREEN;
     private static readonly Color offColor = Raylib.BLACK;
     public FireSpreadAutomata fireAutomata = new(widthNum, heightNum);
@@ -28,7 +28,7 @@ class GridInterface
 
             }
 
-            Raylib.DrawRectangle(40 + 32 * posX, 130 + 32 * posY, 30, 30, fireAutomata.gridFire[posX][posY - 1].GetColor());
+            Raylib.DrawRectangle(40 + 7 * posX, 130 + 7 * posY, 7, 7, fireAutomata.gridFire[posX][posY - 1].GetColor());
             posX++;
         }
     }
@@ -44,7 +44,7 @@ class LamportInterface
         VERIFY
     };
 
-    static GridInterface map = new(9);
+    static GridInterface map = new(100);
     static Rectangle signButtonRec = new Rectangle(
         1200, 320, 80, 30
     );
@@ -71,17 +71,17 @@ class LamportInterface
                     Raylib.DrawText(map.fireAutomata.BurnPercentage().ToString(), 1150, 380, 50, Raylib.BLACK);
 
 
-                    if (RayGui.GuiButton(signButtonRec, "Verify!"))
-                    {
+                    // if (RayGui.GuiButton(signButtonRec, "Verify!"))
+                    // {
 
-                        Console.WriteLine($"WARN: Missing files!");
+                    //     Console.WriteLine($"WARN: Missing files!");
 
-                    }
+                    // }
 
-                    if (RayGui.GuiButton(changeModeRec, "#61#"))
-                    {
-                        state = UIState.SIGN;
-                    }
+                    // if (RayGui.GuiButton(changeModeRec, "#61#"))
+                    // {
+                    //     state = UIState.SIGN;
+                    // }
                 }
                 break;
             default:
@@ -127,7 +127,7 @@ class LamportInterface
 
             UpdateAndDraw(ref currentState, period);
             //Speed to burn
-            // Thread.Sleep(1000);
+            Thread.Sleep(300);
             Raylib.EndDrawing();
             period++;
         }

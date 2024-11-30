@@ -1,4 +1,5 @@
 
+
 class FireSpreadAutomata
 {
     private readonly int reticuladoWidth;
