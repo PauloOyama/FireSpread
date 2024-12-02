@@ -9,8 +9,7 @@ class GridInterface
     private static int heightNum = 100;
     private static readonly Color onColor = Raylib.DARKGREEN;
     private static readonly Color offColor = Raylib.BLACK;
-    public FireSpreadAutomata fireAutomata = new(widthNum, heightNum);
-
+    public FireSpreadAutomata fireAutomata = new(widthNum, heightNum, WindDirection.West_East);
 
     public GridInterface(int size) => widthNum = size;
 
@@ -130,6 +129,10 @@ class LamportInterface
             Thread.Sleep(300);
             Raylib.EndDrawing();
             period++;
+            // if (period == 21) Console.ReadLine();
+            // if (period == 41) Console.ReadLine();
+            // if (period == 61) Console.ReadLine();
+            // if (period == 81) Console.ReadLine();
         }
 
         Raylib.CloseWindow();
